@@ -1,0 +1,10 @@
+#desc {
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap;
+    width:100px;
+}
+
+.descHide {
+    overflow: hidden;
+}
