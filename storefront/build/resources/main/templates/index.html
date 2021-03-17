@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/bootstrap::head">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Movie shop</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+<!--            <li class="nav-item dropdown">-->
+<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    Dropdown-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                    <a class="dropdown-item" href="#">Action</a>-->
+<!--                    <a class="dropdown-item" href="#">Another action</a>-->
+<!--                    <div class="dropdown-divider"></div>-->
+<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+<!--            </li>-->
+        </ul>
+
+    </div>
+</nav>
+
+<div th:switch="${movies}" class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 th:case="null">No movies yet!</h2>
+            <div th:case="*">
+                <h2 class="my-5">Movies</h2>
+                <table class="table table-striped table-responsive-md">
+                    <thead>
+                    <tr>
+                        <th style="width: 20%">Movie Name</th>
+                        <th style="width: 40%">Description</th>
+                        <th style="width: 20%"></th>
+                        <th style="width: 20%"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="movie : ${movies}">
+
+                            <tr>
+                                <td th:text="${movie.name}"></td>
+<!--                                <td th:text="${movie.description}"></td>-->
+                                <td>
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" th:attr="data-target='#accordion_'+${movie.id}, aria-controls='accordion_'+${movie.id}, id='collapse_'+${movie.id}" role="button" aria-expanded="false">
+                                        See details
+                                    </button>
+                                </td>
+                                <td><a th:href="@{/edit/{id}(id=${movie.id})}" class="btn btn-primary">Add to cart <i class="fas fa-edit"></i></a></td>
+                                <td><a th:href="@{/delete/{id}(id=${movie.id})}" class="btn btn-primary">Delete <i class="fas fa-minus-circle ml-2"></i></a></td>
+                                <script th:inline="javascript">
+                                    /*<![CDATA[*/
+                                        var movieId  = /*[[${movie.id}]]*/;
+                                        $("#collapse_"+movieId).click(function() {
+                                            console.log("Hello world");
+                                        });
+                                    /*]]>*/
+                                </script>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">
+                                    <div class="collapse multi-collapse" th:id="'accordion_'+${movie.id}">
+                                        <div class="card card-body">
+                                            Some Text here bla bla bla bla bla
+                                        </div>
+<!--                                        <form th:action="@{/addreview}" th:object="${movieReview}" method="post">-->
+<!--                                            <input type="hidden" th:field="*{id}">-->
+<!--                                            <div class="row">-->
+<!--                                                <div class="form-group col-md-6">-->
+<!--                                                    <label for="movieName" class="col-form-label">Movie name</label>-->
+<!--                                                    <input type="text" th:field="*{movieName}" class="form-control" id="movieName" placeholder="Movie name">-->
+<!--                                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('movieName')}" th:errors="*{movieName}"></div>-->
+
+<!--                                                </div>-->
+<!--                                                <div class="form-group col-md-6">-->
+<!--                                                    <label for="review" class="col-form-label">Review</label>-->
+<!--                                                    <input type="text" th:field="*{review}" class="form-control" id="review" placeholder="Movie review">-->
+<!--                                                    &lt;!&ndash;                        <span th:if="${#fields.hasErrors('review')}" th:errors="*{review}" class="text-danger"></span>&ndash;&gt;-->
+<!--                                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('review')}" th:errors="*{review}"></div>-->
+
+<!--                                                </div>-->
+
+<!--                                            </div>-->
+<!--                                            <div class="row">-->
+<!--                                                <div class="col-md-6 mt-5">-->
+<!--                                                    <input type="submit" class="btn btn-primary" value="Add Review">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </form>-->
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <p class="my-5"><a href="/addreview" class="btn btn-primary">Add a movie review <i class="fas fa-plus-circle ml-2"></i></a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

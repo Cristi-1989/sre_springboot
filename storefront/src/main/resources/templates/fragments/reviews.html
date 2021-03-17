@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment=""movie_reviews>
+        <ul>
+            <li th:each="review : ${movieReviews}" th:text="{review.review}"></li>
+        </ul>
+    </div>
+</body>
+</html>
