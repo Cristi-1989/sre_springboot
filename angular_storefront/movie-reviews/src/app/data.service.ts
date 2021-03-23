@@ -86,7 +86,7 @@ export class DataService {
   getMovie(movieId: number) : Observable<Movie> {
     return of(this.movies.find(movie => movie.id === movieId));
   }
-  addRoom(movieReview: MovieReview) {
+  addRating(movieReview: MovieReview) {
     const maxId = Math.max(...this.movieReviews
       .map(review => review.rating)
       );

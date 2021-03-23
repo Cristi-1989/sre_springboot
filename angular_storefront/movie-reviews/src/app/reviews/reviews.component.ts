@@ -50,7 +50,7 @@ export class ReviewsComponent implements OnInit {
     newReview.review = this.reviewForm.controls['review'].value;
     newReview.rating = this.reviewForm.controls['rating'].value;
     newReview.movieId = this.movieId;
-    this.dataService.addRoom(newReview);
+    this.dataService.addRating(newReview);
     this.loadMovieReviews(this.movieId);
     let movieId = this.movieId;
     this.dataChangedEvent.emit(movieId);
