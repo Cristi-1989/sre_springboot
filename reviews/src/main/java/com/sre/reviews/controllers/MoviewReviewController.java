@@ -9,12 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/reviews")
 public class MoviewReviewController {
 
     @Autowired
     MovieReviewRepository movieReviewRepository;
 
-    @GetMapping("/reviews")
+    @GetMapping
     public List<MovieReview> getAllReviews(@RequestParam Optional<Long> movieId) {
         if (movieId.isPresent()) {
             return movieReviewRepository.findByMovieId(movieId.get());
@@ -22,13 +23,13 @@ public class MoviewReviewController {
         return movieReviewRepository.findAll();
     }
 
-    @GetMapping("/reviews/{id}")
+    @GetMapping("/{id}")
     public MovieReview getReview(@PathVariable("id") long id) {
         return movieReviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movieReview Id:" + id));
     }
 
-    @PutMapping("/reviews/{id}")
+    @PutMapping("/{id}")
     public void updateReview(@PathVariable("id") long id, @RequestBody MovieReview review) {
         MovieReview movieReview = movieReviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movieReview Id:" + id));
@@ -40,7 +41,7 @@ public class MoviewReviewController {
         movieReviewRepository.save(movieReview);
     }
 
-    @PostMapping("/createReview")
+    @PostMapping("/")
     public void createReview(@RequestBody MovieReview movieReview) {
         movieReviewRepository.save(movieReview);
     }

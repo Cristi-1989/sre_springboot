@@ -20,19 +20,16 @@ public class MovieRatingController {
     @Autowired
     RatingCalcService ratingCalcService;
 
-
-
-    @PostMapping
-    public void addMovieRating(@RequestBody MovieRating movieRating) {
-        Mono<MovieRating> movieRatings = movieRatingRepository.findByMovieId(movieRating.getMovieId());
-        ratingCalcService.getUpdatedRating(movieRatings, Mono.just(movieRating))
-                .flatMap(newRating -> {
-                    MovieRating mr = new MovieRating();
-                    mr.setMovieId(movieRating.getMovieId());
-                    mr.setRating(newRating);
-                    return  movieRatingRepository.save(mr);
-
+    @PutMapping("{movieId}")
+    public void addMovieRating(@PathVariable int movieId, @RequestBody MovieRating movieRating) {
+        movieRatingRepository.findByMovieId(movieId)
+                .flatMap(old -> {
+                    movieRating.setRating(ratingCalcService.getUpdatedRating(old, movieRating));
+                    movieRating.setMovieId(movieId);
+                    movieRating.setId(old.getId());
+                    return movieRatingRepository.save(movieRating);
                 })
+                .switchIfEmpty(movieRatingRepository.save(new MovieRating(movieId, movieRating.getRating())))
                 .subscribe(res -> logger.info("Calculated a new rating for movie id {}, rating {}", res.getMovieId(), res.getRating()));
     }
 

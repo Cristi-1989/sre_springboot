@@ -10,6 +10,4 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface MovieRatingRepository extends R2dbcRepository<MovieRating, Long> {
     Mono<MovieRating> findByMovieId(long movieId);
-
-    Mono<MovieRating> save(MovieRating movieRating);
 }
