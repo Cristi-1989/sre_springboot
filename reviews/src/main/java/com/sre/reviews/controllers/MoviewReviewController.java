@@ -41,7 +41,7 @@ public class MoviewReviewController {
         movieReviewRepository.save(movieReview);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public void createReview(@RequestBody MovieReview movieReview) {
         movieReviewRepository.save(movieReview);
     }
