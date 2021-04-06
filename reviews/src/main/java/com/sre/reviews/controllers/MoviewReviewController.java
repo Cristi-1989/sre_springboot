@@ -1,7 +1,9 @@
 package com.sre.reviews.controllers;
 
+import com.sre.reviews.dto.RatingsDTO;
 import com.sre.reviews.model.MovieReview;
 import com.sre.reviews.repo.MovieReviewRepository;
+import com.sre.reviews.services.RatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,9 @@ public class MoviewReviewController {
 
     @Autowired
     MovieReviewRepository movieReviewRepository;
+
+    @Autowired
+    RatingsService ratingsService;
 
     @GetMapping
     public List<MovieReview> getAllReviews(@RequestParam Optional<Long> movieId) {
@@ -29,21 +34,23 @@ public class MoviewReviewController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movieReview Id:" + id));
     }
 
-    @PutMapping("/{id}")
-    public void updateReview(@PathVariable("id") long id, @RequestBody MovieReview review) {
-        MovieReview movieReview = movieReviewRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid movieReview Id:" + id));
-
-        movieReview.setMovieId(review.getMovieId());
-        movieReview.setRating(review.getRating());
-        movieReview.setReview(review.getReview());
-
-        movieReviewRepository.save(movieReview);
-    }
+//    @PutMapping("/{id}")
+//    public void updateReview(@PathVariable("id") long id, @RequestBody MovieReview review) {
+//        MovieReview movieReview = movieReviewRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid movieReview Id:" + id));
+//
+//        movieReview.setMovieId(review.getMovieId());
+//        movieReview.setRating(review.getRating());
+//        movieReview.setReview(review.getReview());
+//
+//        movieReviewRepository.save(movieReview);
+//    }
 
     @PostMapping
     public void createReview(@RequestBody MovieReview movieReview) {
         movieReviewRepository.save(movieReview);
+        RatingsDTO ratingsDTO = new RatingsDTO(movieReview.getMovieId(), movieReview.getRating());
+        ratingsService.saveRating(ratingsDTO);
     }
 
 

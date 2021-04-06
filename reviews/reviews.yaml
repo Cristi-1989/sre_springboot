@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+  name: reviews
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: reviews
+    spec:
+      containers:
+        - image: crististoica/reviews:latest
+          name: reviews
+          resources: {}
+          ports:
+            - containerPort: 8081

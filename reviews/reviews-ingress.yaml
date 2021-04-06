@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reviews-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /api/reviews
+spec:
+  rules:
+    - host: reviews.info
+      http:
+        paths:
+          - path: /api/reviews
+            pathType: Prefix
+            backend:
+              service:
+                name: reviews
+                port:
+                  number: 8081

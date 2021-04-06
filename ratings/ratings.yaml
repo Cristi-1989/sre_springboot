@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ratings
+  name: ratings
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ratings
+    spec:
+      containers:
+        - image: crististoica/ratings:latest
+          name: ratings
+          resources: {}
+          ports:
+            - containerPort: 8082

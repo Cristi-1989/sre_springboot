@@ -16,7 +16,7 @@ public class RestMoviesController {
     @Autowired
     private MovieRepository movieRepository;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
