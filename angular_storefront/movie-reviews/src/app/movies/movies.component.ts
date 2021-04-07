@@ -26,13 +26,15 @@ export class MoviesComponent implements OnInit {
   }
 
   reloadData(movieId: number) {
+    this.loadData();
     let movieRating = this.movieRatings.get(movieId);
     this.dataService.getMovieRating(movieId).subscribe(
-      rating => movieRating = rating
-    );
-
-    console.log('movie id is: ' + movieId);
-    this.movieRatings.set(movieId, movieRating);
+      rating => {
+        movieRating = rating;
+        console.log('movie id is: ' + movieId);
+        this.movieRatings.set(movieId, movieRating);
+      }
+  );
 }
 
   loadData(): void {
@@ -40,20 +42,28 @@ export class MoviesComponent implements OnInit {
       (next) => {
         this.movies = next;
         this.loadingData = false;
+        this.loadReviews();
       },
       (error) => {
         this.message = "Error loading movies...";
       }
     )
+  }
 
+  loadReviews(): void {
     for (let movie of this.movies) {
-      let movieRating: MovieRating;
+      const movieRating = new MovieRating();
+      movieRating.movieId = movie.id;
+      movieRating.rating = 0;
+      this.movieRatings.set(movie.id, movieRating );
       this.dataService.getMovieRating(movie.id).subscribe(
-        rating => movieRating = rating
+        rating => {
+          this.movieRatings.set(movie.id, rating);
+        }
       );
-      this.movieRatings.set(movie.id, movieRating);
     }
   }
+
 
   // loadMovieReviews(movieId: number) {
   //   if (!this.movieReviews.has(movieId)) {

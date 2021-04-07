@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  moviesServiceUrl: 'https://localhost:8080',
-  movieReviewServiceUrl: 'https://localhost:8081'
+  moviesServiceUrl: 'http://movies.info/api/movies',
+  movieReviewServiceUrl: 'http://reviews.info/api/reviews',
+  movieRatingServiceUrl: 'http://ratings.info/api/ratings'
 };

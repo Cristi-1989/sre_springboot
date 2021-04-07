@@ -9,6 +9,7 @@ build:
 push:
 	docker push crististoica/ratings
 deploy:
+	kubectl get deployment ratings -o yaml | kubectl delete -f -
 	kubectl apply -f ratings.yaml
 expose:
 	kubectl get svc ratings -o yaml | kubectl delete -f -

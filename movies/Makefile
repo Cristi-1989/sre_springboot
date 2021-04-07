@@ -9,6 +9,7 @@ build:
 push:
 	docker push crististoica/movies
 deploy:
+	kubectl get deployment movies -o yaml | kubectl delete -f -
 	kubectl apply -f movies.yaml
 expose:
 	kubectl get svc movies -o yaml | kubectl delete -f -

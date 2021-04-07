@@ -9,6 +9,7 @@ build:
 push:
 	docker push crististoica/reviews
 deploy:
+	kubectl get deployment reviews -o yaml | kubectl delete -f -
 	kubectl apply -f reviews.yaml
 expose:
 	kubectl get svc reviews -o yaml | kubectl delete -f -

@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/ratings")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MovieRatingController {
     Logger logger = LogManager.getLogger(MovieRatingController.class);
 

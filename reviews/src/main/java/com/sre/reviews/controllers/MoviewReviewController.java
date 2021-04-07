@@ -4,6 +4,8 @@ import com.sre.reviews.dto.RatingsDTO;
 import com.sre.reviews.model.MovieReview;
 import com.sre.reviews.repo.MovieReviewRepository;
 import com.sre.reviews.services.RatingsService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +14,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MoviewReviewController {
+
+    Logger logger = LogManager.getLogger(MoviewReviewController.class);
 
     @Autowired
     MovieReviewRepository movieReviewRepository;
@@ -48,6 +53,7 @@ public class MoviewReviewController {
 
     @PostMapping
     public void createReview(@RequestBody MovieReview movieReview) {
+        logger.info("Received new movie review: {}", movieReview);
         movieReviewRepository.save(movieReview);
         RatingsDTO ratingsDTO = new RatingsDTO(movieReview.getMovieId(), movieReview.getRating());
         ratingsService.saveRating(ratingsDTO);

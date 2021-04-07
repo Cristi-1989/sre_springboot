@@ -57,41 +57,71 @@ export class DataService {
 
 
   getMovieReviews(movieId: number): Observable<Array<MovieReview>> {
-    return of(this.movieReviews.filter(movieReview => movieReview.movieId == movieId));
+    return this.http.get<Array<MovieReview>>(environment.movieReviewServiceUrl + "?movieId=" + movieId)
+      .pipe(
+        map( data => {
+          const reviews = new Array<MovieReview>();
+          for (const review of data) {
+            reviews.push(MovieReview.fromHttp(review));
+          }
+          this.movieReviews = reviews;
+          return reviews;
+        })
+      );
+
+    // return of(this.movieReviews.filter(movieReview => movieReview.movieId == movieId));
   }
 
   getMovieRating(movieId: number): Observable<MovieRating> {
-    const movieRating: MovieRating = new MovieRating();
-    movieRating.movieId = movieId;
-    movieRating.rating = Math.trunc(Math.random() * Math.floor(10));
-    return of(movieRating);
+    return this.http.get<MovieRating>(environment.movieRatingServiceUrl + "/" + movieId)
+      .pipe(
+        map(data => {
+          return MovieRating.fromHttp(data);
+        })
+      )
+    // const movieRating: MovieRating = new MovieRating();
+    // movieRating.movieId = movieId;
+    // movieRating.rating = Math.trunc(Math.random() * Math.floor(10));
+    // console.log("Calculating rating... {}", movieRating.rating);
+    // return of(movieRating);
   }
 
   getMovies(): Observable<Array<Movie>> {
-    // return this.http.get<Array<Movie>>(environment.moviesServiceUrl + '/api/movies')
-    //   .pipe(
-    //     map( data => {
-    //       const movies = new Array<Movie>();
-    //       for (const movie of data) {
-    //         movies.push(Movie.fromHttp(movie));
-    //       }
-    //
-    //       return movies;
-    //     })
-    //   );
-
-    return of(this.movies);
+    console.log("Movies service URL is: " + environment.moviesServiceUrl);
+    return this.http.get<Array<Movie>>(environment.moviesServiceUrl)
+      .pipe(
+        map( data => {
+          const movies = new Array<Movie>();
+          for (const movie of data) {
+            movies.push(Movie.fromHttp(movie));
+          }
+          this.movies = movies;
+          return movies;
+        })
+      );
   }
 
   getMovie(movieId: number) : Observable<Movie> {
     return of(this.movies.find(movie => movie.id === movieId));
   }
   addRating(movieReview: MovieReview) {
-    const maxId = Math.max(...this.movieReviews
-      .map(review => review.rating)
-      );
+    const fullMovieReview = {movieId: movieReview.movieId, review: movieReview.review, rating: movieReview.rating};
+    console.log(movieReview);
+    return this.http.post<MovieReview>(environment.movieReviewServiceUrl, fullMovieReview)
+      .subscribe(
+        (data) => {
 
-    movieReview.id = maxId + 1;
-    this.movieReviews.push(movieReview);
+        },
+        (error) => {
+          console.log(error);
+          // get the status as error.status
+        })
+
+    // const maxId = Math.max(...this.movieReviews
+    //   .map(review => review.rating)
+    //   );
+    //
+    // movieReview.id = maxId + 1;
+    // this.movieReviews.push(movieReview);
   }
 }
