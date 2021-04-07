@@ -80,3 +80,10 @@ tools/gulp-tasks/cldr/cldr-data/
 
 # Husky
 .husky/_
+
+*/.gradle/*
+.gradle/*
+
+# project specific
+
+movies/build/*
